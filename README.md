@@ -21,9 +21,10 @@ Domain library / SDK (handles connections, protocols, validation)
 
 | Jig | Description | Language(s) |
 |-----|-------------|-------------|
+| [spotify-playlist](spotify-playlist/) | Search, create, and manage Spotify playlists — auto-batching, dry-run, token refresh | TypeScript |
 | [builder](builder/) | A meta-jig: teaches AI agents how to build new jigs for any domain | Generates Python or TypeScript |
 
-More jigs will be added over time. Each lives in its own top-level directory with a self-contained README.
+Each jig lives in its own top-level directory with a self-contained README.
 
 ## What Makes a Good Jig
 
@@ -47,11 +48,15 @@ It walks through: domain contract, language choice, types, library, scripts, doc
 
 ```
 jigs/
+├── spotify-playlist/ # Spotify playlist management jig
+│   ├── src/          # TypeScript SDK (client, types, operations)
+│   ├── scripts/      # Runnable scripts + examples
+│   ├── docs/         # GUIDE.md, API.md, EXAMPLES.md, CONCEPTS.md
+│   └── CLAUDE.md     # Agent instructions
 ├── builder/          # Meta-jig: skill + agents for building new jigs
 │   ├── skill/        # SKILL.md, templates, reference docs, examples
 │   ├── agents/       # Claude Code teammate agents for parallel builds
 │   └── README.md
-├── <future-jig>/     # Each jig gets its own top-level directory
 └── README.md         # You are here
 ```
 
