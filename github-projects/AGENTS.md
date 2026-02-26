@@ -28,6 +28,7 @@ const gh = await connect();  // auto-detects owner/repo from git remote
 - `gh.getIssue(number)` → `GitHubIssue` — get an issue
 - `gh.searchIssues(query)` → `GitHubIssue[]` — search issues
 - `gh.resolveIssues(refs)` → `ResolvedIssue[]` — fuzzy lookup (numbers, URLs, text)
+- `gh.createProject(input)` → `CreateProjectResult` — create a project, link repo, create fields
 - `gh.draft(input)` → `DraftTicket` — plan a ticket (`.preview()` then `.create()`)
 - `gh.draftBatch(inputs)` → `DraftBatch` — plan multiple tickets
 - `gh.getProject(number)` → `ProjectWithActions` — get a project
@@ -39,7 +40,9 @@ const gh = await connect();  // auto-detects owner/repo from git remote
 
 - Field values use human-readable names (e.g. `"Todo"`, `"P1"`) — the library resolves to IDs
 - Use `"@current"` / `"@next"` for iteration fields
-- All writes go through a two-step flow: build plan → preview → execute
+- Ticket and bulk field updates use a two-step flow: build plan → preview → execute
+- Project bootstrap scripts should expose `--dry-run` for safe previews
+- Project view/tab setup is best-effort only (currently reported as skipped due GitHub API/CLI limits)
 - Error classes: `GitHubProjectsError`, `AuthError`, `NotFoundError`, `ValidationError`, `GhCliError`
 
 ## Prerequisites

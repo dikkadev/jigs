@@ -19,7 +19,7 @@ Scripts in `scripts/` use the library.
 ## Key Patterns
 
 ### Two-Step Confirm Pattern
-All write operations use preview → confirm → execute:
+Issue and field update writes use preview → confirm → execute:
 ```ts
 const ticket = gh.draft({ title: "...", project: { number: 3, fields: { Status: "Todo" } } });
 console.log(await ticket.preview());  // shows what would happen
@@ -46,6 +46,19 @@ const items = await project.findItems({ Status: "In Progress" });
 const plan = project.setFields(items, { Status: "In Review" });
 console.log(plan.preview());
 await plan.execute();
+```
+
+### Project Bootstrap
+```ts
+const created = await gh.createProject({
+  title: "Platform Backlog",
+  fields: [
+    { name: "Priority", dataType: "SINGLE_SELECT", options: ["P0", "P1", "P2"] },
+    { name: "Size", dataType: "SINGLE_SELECT", options: ["S", "M", "L"] },
+  ],
+  views: ["Backlog", "Board"], // currently reported as skipped
+});
+console.log(created.project.url);
 ```
 
 ## Prerequisites

@@ -78,9 +78,16 @@ If the `project` scope is missing, run:
 gh auth refresh -s project
 ```
 
+## Project Views / Tabs
+
+Projects V2 supports multiple views in the UI (board, table, roadmap, custom filtered tabs).  
+As of today, GitHub's public API/CLI does not expose stable mutations for creating/editing those views.
+
+This library accepts requested view names during project bootstrap and reports them as skipped, so scripts can preserve intent without pretending view setup happened.
+
 ## The Preview → Execute Pattern
 
-This library is designed for human-in-the-loop workflows. Every write operation follows:
+This library is designed for human-in-the-loop workflows. Ticket and field update writes follow:
 
 1. **Build** — construct a plan object describing what should happen
 2. **Preview** — resolve all references, validate, show a human-readable summary
@@ -90,3 +97,5 @@ This is safer than direct API calls because:
 - Invalid field names or option names are caught at preview time
 - The user sees exactly what will change before it happens
 - Dry-run scripts naturally fall out of this pattern
+
+Project bootstrap (`createProject`) is immediate; for that workflow, the recommended safety pattern is script-level `--dry-run` before execution.

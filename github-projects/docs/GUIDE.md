@@ -12,7 +12,7 @@ The library hides the complexity of:
 
 ## Two-Step Confirm Pattern
 
-**Every write operation follows the same flow: build a plan → preview → execute.**
+**Ticket creation and bulk field updates follow the same flow: build a plan → preview → execute.**
 
 ```ts
 // 1. Build a plan (no API calls yet, or just read calls for validation)
@@ -29,6 +29,8 @@ This pattern appears in three places:
 - `DraftTicket` → `.preview()` → `.create()`
 - `DraftBatch` → `.preview()` → `.create()`
 - `BulkUpdatePlan` → `.preview()` → `.execute()`
+
+Project bootstrap (`createProject`) is an immediate write API; use script-level `--dry-run` if you want a preflight plan before creating resources.
 
 ## Connecting
 
@@ -92,6 +94,27 @@ for (const [name, field] of project.fields) {
   }
 }
 ```
+
+### Creating a New Project Board
+
+```ts
+const created = await gh.createProject({
+  title: "API Platform Board",
+  description: "Kanban board for API work",
+  linkRepository: true, // default
+  fields: [
+    { name: "Priority", dataType: "SINGLE_SELECT", options: ["P0", "P1", "P2"] },
+    { name: "Size", dataType: "SINGLE_SELECT", options: ["S", "M", "L"] },
+  ],
+  views: ["Backlog", "Board"], // currently returned as skipped
+});
+
+console.log(created.project.number, created.project.url);
+console.log(created.fields);       // created/skipped field results
+console.log(created.viewsSkipped); // explains view limitations
+```
+
+`views` is accepted for intent-level planning, but GitHub's public API/CLI does not currently expose mutations to create or configure project views/tabs.
 
 ### Finding Items by Field Values
 

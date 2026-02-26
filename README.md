@@ -22,6 +22,7 @@ Domain library / SDK (handles connections, protocols, validation)
 | Jig | Description | Language(s) |
 |-----|-------------|-------------|
 | [spotify-playlist](spotify-playlist/) | Search, create, and manage Spotify playlists — auto-batching, dry-run, token refresh | TypeScript |
+| [github-projects](github-projects/) | Create and manage GitHub Projects V2 + issues with typed project fields (Status, Priority, Size, Iteration) | TypeScript |
 | [builder](builder/) | A meta-jig: teaches AI agents how to build new jigs for any domain | Generates Python or TypeScript |
 
 Each jig lives in its own top-level directory with a self-contained README.
@@ -53,6 +54,11 @@ jigs/
 │   ├── scripts/      # Runnable scripts + examples
 │   ├── docs/         # GUIDE.md, API.md, EXAMPLES.md, CONCEPTS.md
 │   └── CLAUDE.md     # Agent instructions
+├── github-projects/   # GitHub Issues + Projects V2 management
+│   ├── src/           # TypeScript SDK (client, types, operations)
+│   ├── scripts/       # Runnable scripts + examples
+│   ├── docs/          # GUIDE.md, API.md, EXAMPLES.md, CONCEPTS.md
+│   └── CLAUDE.md      # Agent instructions
 ├── builder/          # Meta-jig: skill + agents for building new jigs
 │   ├── skill/        # SKILL.md, templates, reference docs, examples
 │   ├── agents/       # Claude Code teammate agents for parallel builds

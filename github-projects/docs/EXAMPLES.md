@@ -196,3 +196,46 @@ if (args["dry-run"]) {
 
 await ticket.create();
 ```
+
+## 8. Bootstrap a new project board and seed issues
+
+Create a project, set up custom fields, and then create issues directly into that project.
+
+```ts
+import { connect } from "../src/index.js";
+
+const gh = await connect();
+
+const created = await gh.createProject({
+  title: "Platform Backlog",
+  description: "Kanban board for platform work",
+  fields: [
+    { name: "Priority", dataType: "SINGLE_SELECT", options: ["P0", "P1", "P2", "P3"] },
+    { name: "Size", dataType: "SINGLE_SELECT", options: ["XS", "S", "M", "L"] },
+  ],
+  views: ["Backlog", "Board"], // reported as skipped today
+});
+
+const batch = gh.draftBatch([
+  {
+    title: "Add rate limiting to /api/search",
+    labels: ["enhancement", "api"],
+    project: {
+      number: created.project.number,
+      fields: { Status: "Todo", Priority: "P1", Size: "M" },
+    },
+  },
+  {
+    title: "Improve API error observability",
+    labels: ["observability"],
+    project: {
+      number: created.project.number,
+      fields: { Status: "Todo", Priority: "P2", Size: "S" },
+    },
+  },
+]);
+
+console.log(await batch.preview());
+const results = await batch.create();
+console.log(results.map((r) => r.issue.url));
+```

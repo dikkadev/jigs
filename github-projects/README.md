@@ -6,10 +6,11 @@ An AI agent writes short scripts against this SDK. You review and run them.
 
 ## What It Does
 
+- **Bootstrap a new project board** — create a GitHub Project, link a repository, and create custom fields (Priority/Size/etc.)
 - **Create tickets** with project field assignments (Status, Priority, Iteration, Size) in a single flow
 - **Bulk-manage** issues — move them between statuses, iterations, priorities with a preview table before execution
 - **Fuzzy-find** issues by number, URL, or title fragment — suggests similar issues when no exact match exists
-- **Preview everything** before it happens — every write operation follows a plan → preview → execute pattern
+- **Preview critical writes** before they happen — ticket and bulk field updates follow plan → preview → execute, and bootstrap scripts support `--dry-run`
 
 ## Quick Start
 
@@ -69,6 +70,7 @@ bun run scripts/examples/create-ticket.ts --dry-run    # Draft a ticket with pro
 bun run scripts/examples/bulk-move.ts --dry-run         # Move items between statuses
 bun run scripts/examples/rollover-iteration.ts --dry-run # Roll over items to next sprint
 bun run scripts/examples/batch-create.ts --dry-run      # Create multiple related tickets
+bun run scripts/examples/bootstrap-project.ts --dry-run # Plan project + fields + starter issues
 bun run scripts/examples/find-issues.ts "search query"   # Fuzzy issue lookup
 ```
 

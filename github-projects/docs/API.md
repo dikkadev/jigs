@@ -87,6 +87,22 @@ async listProjects(): Promise<Array<{
 }>>
 ```
 
+### `createProject(input)`
+
+Create and bootstrap a GitHub Project board.
+
+```ts
+async createProject(input: CreateProjectInput): Promise<CreateProjectResult>
+```
+
+Supports:
+- project creation (`title`)
+- optional metadata (`description`, `readme`, `visibility`)
+- optional repo linking (defaults to linking the connected repo)
+- optional custom field creation (`TEXT`, `NUMBER`, `DATE`, `SINGLE_SELECT`)
+
+If `views` are requested, they are returned in `viewsSkipped` because GitHub's public API/CLI currently does not expose project view mutation endpoints.
+
 ### `draft(input)`
 
 Draft a new ticket with optional project field assignments.
@@ -303,6 +319,35 @@ interface DraftInput {
 }
 ```
 
+### `ProjectFieldCreateInput`
+
+```ts
+type ProjectFieldCreateInput =
+  | {
+      name: string;
+      dataType: "TEXT" | "NUMBER" | "DATE";
+    }
+  | {
+      name: string;
+      dataType: "SINGLE_SELECT";
+      options: string[];
+    };
+```
+
+### `CreateProjectInput`
+
+```ts
+interface CreateProjectInput {
+  title: string;
+  description?: string;
+  readme?: string;
+  visibility?: "PUBLIC" | "PRIVATE";
+  linkRepository?: boolean | string; // default: true
+  fields?: ProjectFieldCreateInput[];
+  views?: string[]; // best-effort request, currently skipped with reason
+}
+```
+
 ### `CreateTicketResult`
 
 ```ts
@@ -310,6 +355,27 @@ interface CreateTicketResult {
   issue: GitHubIssue;
   projectItem?: { id: string };
   fieldsSet?: Record<string, string>;
+}
+```
+
+### `ProjectFieldCreateResult`
+
+```ts
+interface ProjectFieldCreateResult {
+  name: string;
+  created: boolean;
+  reason?: string;
+}
+```
+
+### `CreateProjectResult`
+
+```ts
+interface CreateProjectResult {
+  project: Project;
+  linkedRepository: boolean;
+  fields: ProjectFieldCreateResult[];
+  viewsSkipped: string[];
 }
 ```
 
